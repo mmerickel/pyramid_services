@@ -58,7 +58,7 @@ Services are now accessible from the ``request`` object during a request
 lifecycle via the
 ``request.find_service(type_or_iface=Interface, context=None, name='')``
 method. Unless a custom ``context`` is passed to ``find_service``, the
-lookup default to using ``request.context``.
+lookup will default to using ``request.context``.
 
 ::
 
@@ -113,7 +113,7 @@ Let's hook it up to our application.
     config.scan('.views')
     return config.make_wsgi_app()
 
-Finally let's create our view that utilizes the service.
+Finally, let's create our view that utilizes the service.
 
 ::
 
@@ -248,3 +248,6 @@ tutorials.
   for dummy implementations for easy creation of templates and frontend
   logic. Later, the real service layer can be swapped in as it's developed,
   building out the backend functionality.
+
+- Most services may be implemented in such a way that they do not depend on
+  Pyramid or a particular request object.
