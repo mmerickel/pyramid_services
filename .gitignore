@@ -1,0 +1,4 @@
+/.tox
+/env/
+/build
+/dist
