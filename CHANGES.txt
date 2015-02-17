@@ -1,2 +1,6 @@
-unreleased
-==========
+0.1 (2015-02-17)
+================
+
+- Support for ``request.find_service``, ``config.register_service``, and
+  ``config.register_service_factory``.
+- Initial commits.
