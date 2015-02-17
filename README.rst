@@ -37,7 +37,7 @@ Activate ``pyramid_services`` by including it into your pyramid application.
 
 This will add some new directives to your ``Configurator``.
 
-``config.register_service(obj, iface=None, context=None, name='')``
+- ``config.register_service(obj, iface=None, context=None, name='')``
 
   This method will register a service object for the supplied
   ``iface``, ``context``, and ``name``. This effectively registers a
