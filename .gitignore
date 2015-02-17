@@ -2,3 +2,8 @@
 /env/
 /build
 /dist
+/.eggs
+*.egg-info
+*.py[co]
+__pycache__
+.coverage

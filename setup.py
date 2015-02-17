@@ -13,6 +13,12 @@ requires = [
     'zope.interface',
 ]
 
+tests_require = requires + [
+    'coverage',
+    'nose',
+    'webtest',
+]
+
 setup(
     name='pyramid_services',
     version='0.1.dev0',
@@ -43,7 +49,10 @@ setup(
     zip_safe=False,
     install_requires=requires,
     extras_require={
+        'testing': tests_require,
     },
+    tests_require=tests_require,
+    test_suite='pyramid_services',
     entry_points={
     },
 )

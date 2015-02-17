@@ -37,26 +37,27 @@ Activate ``pyramid_services`` by including it into your pyramid application.
 
 This will add some new directives to your ``Configurator``.
 
-``config.register_service(obj, type_or_iface, context=Interface, name='')``
+``config.register_service(obj, iface=None, context=None, name='')``
 
   This method will register a service object for the supplied
-  ``type_or_iface`` and ``name``. This effectively registers a singleton for
-  your application as the ``obj`` will always be returned when looking for
-  a service.
+  ``iface``, ``context``, and ``name``. This effectively registers a
+  singleton for your application as the ``obj`` will always be returned when
+  looking for a service.
 
-- ``config.register_service_factory(factory, type_or_iface, context=Interface, name='')``
+- ``config.register_service_factory(factory, iface=None, context=None, name='')``
 
-  This method will register a factory for the supplied ``type_or_iface``
-  and ``name``. The factory should be a callable accepting a ``context``
-  and a ``request`` and should return a service object. The callable will be
-  invoked at most once per ``request``/``context``/``name`` combination.
+  This method will register a factory for the supplied ``iface``,
+  ``context``, and ``name``. The factory should be a callable accepting a
+  ``context`` and a ``request`` and should return a service object. The
+  factory will be used at most once per ``request``/``context``/``name``
+  combination.
 
 Usage
 =====
 
-Services are now accessible from the ``request`` object during a request
-lifecycle via the
-``request.find_service(type_or_iface=Interface, context=None, name='')``
+After registering services with the ``Configurator``, they are now
+accessible from the ``request`` object during a request lifecycle via the
+``request.find_service(iface=None, context=None, name='')``
 method. Unless a custom ``context`` is passed to ``find_service``, the
 lookup will default to using ``request.context``.
 
@@ -206,7 +207,7 @@ we can wire services together in the service layer.
 
     def dbsession_factory(context, request):
       dbsession = dbmaker()
-      # register the session with pyramid_tm
+      # register the session with pyramid_tm for managing transactions
       zope.sqlalchemy.register(dbsession, transaction_manager=request.tm)
       return dbsession
 
