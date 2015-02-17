@@ -26,7 +26,7 @@ setup(
     long_description=README + '\n\n' + CHANGES,
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 3 - Beta',
+        'Development Status :: 4 - Beta',
         'Framework :: Pyramid',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
@@ -38,7 +38,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Internet :: WWW/HTTP :: WSGI :: Library',
     ],
     keywords='pyramid services service layer',
     author='Michael Merickel',
