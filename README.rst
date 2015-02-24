@@ -2,6 +2,10 @@
 pyramid_services
 ================
 
+.. image:: https://travis-ci.org/mmerickel/pyramid_services.svg?branch=master
+   :alt: Travis-CI Build Status
+   :target: https://travis-ci.org/mmerickel/pyramid_services
+
 The core of a service layer that integrates with the
 `Pyramid Web Framework <https://docs.pylonsproject.org/projects/pyramid>`__.
 
