@@ -1,6 +1,7 @@
 future
 ================
-- support ``inspectable`` for services (yet implemented)
+
+- support ``introspectable`` for services (yet implemented)
 
 0.1.1 (2015-02-17)
 ==================
