@@ -95,6 +95,7 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
         intr = introspector.get('pyramid_services',
@@ -102,6 +103,7 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "foo2")
+        self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
         intr = introspector.get('pyramid_services',
@@ -109,6 +111,7 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr.title, "('IBarService', 'Interface', '')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IBarService)
 
 
@@ -207,6 +210,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
         intr = introspector.get('pyramid_services',
@@ -214,6 +218,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "foo2")
+        self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
         intr = introspector.get('pyramid_services',
@@ -221,6 +226,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr.title, "('IBarService', 'Interface', '')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IBarService)
 
 

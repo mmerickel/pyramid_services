@@ -89,6 +89,7 @@ def register_service_factory(
     )
     intr['name'] = name
     intr['interface'] = iface
+    intr['context'] = context
     config.action(
         discriminator,
         register,
