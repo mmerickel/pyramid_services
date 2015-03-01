@@ -87,7 +87,7 @@ class TestIntegration_register_service(unittest.TestCase):
 
         config.register_service(DummyService('foo'), IFooService)
         config.register_service(DummyService('foo'), IFooService, name="foo2")
-        config.register_service(DummyService('bar'), IBarService)
+        config.register_service(DummyService('bar'), IBarService, IFooService)
 
         introspector = config.registry.introspector
         intr = introspector.get('pyramid_services',
@@ -107,11 +107,11 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr["interface"], IFooService)
 
         intr = introspector.get('pyramid_services',
-                                ('service factories', (IBarService, Interface, '')))
-        self.assertEqual(intr.title, "('IBarService', 'Interface', '')")
+                                ('service factories', (IBarService, IFooService, '')))
+        self.assertEqual(intr.title, "('IBarService', 'IFooService', '')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
-        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["context"], IFooService)
         self.assertEqual(intr["interface"], IBarService)
 
 
@@ -202,7 +202,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config.register_service_factory(
             DummyServiceFactory('foo'), IFooService, name="foo2")
         config.register_service_factory(
-            DummyServiceFactory('bar'), IBarService)
+            DummyServiceFactory('bar'), IBarService, IFooService)
 
         introspector = config.registry.introspector
         intr = introspector.get('pyramid_services',
@@ -222,11 +222,11 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr["interface"], IFooService)
 
         intr = introspector.get('pyramid_services',
-                                ('service factories', (IBarService, Interface, '')))
-        self.assertEqual(intr.title, "('IBarService', 'Interface', '')")
+                                ('service factories', (IBarService, IFooService, '')))
+        self.assertEqual(intr.title, "('IBarService', 'IFooService', '')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
-        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["context"], IFooService)
         self.assertEqual(intr["interface"], IBarService)
 
 
