@@ -81,6 +81,20 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(resp.body, b'bar')
         self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
 
+    def test_introspectable(self):
+        config = self.config
+        config.set_root_factory(root_factory)
+
+        config.register_service(DummyService('foo'), IFooService)
+        config.register_service(DummyService('bar'), IBarService)
+
+        introspector = config.registry.introspector
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IFooService, Interface, '')))
+        self.assertEqual(intr.title, "service factories")
+        self.assertEqual(intr.type_name, "DummyService")
+
+
 class TestIntegration_register_service_factory(unittest.TestCase):
     def setUp(self):
         self.config = pyramid.testing.setUp()
@@ -158,6 +172,27 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         resp = app.get('/leaf/bar')
         self.assertEqual(resp.body, b'bar')
         self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
+
+    def test_introspectable(self):
+        config = self.config
+        config.set_root_factory(root_factory)
+
+        config.register_service_factory(
+            DummyServiceFactory('foo'), IFooService)
+        config.register_service_factory(
+            DummyServiceFactory('bar'), IBarService)
+
+        introspector = config.registry.introspector
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IFooService, Interface, '')))
+        self.assertEqual(intr.title, "service factories")
+        self.assertEqual(intr.type_name, "DummyServiceFactory")
+
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IBarService, Interface, '')))
+        self.assertEqual(intr.title, "service factories")
+        self.assertEqual(intr.type_name, "DummyServiceFactory")
+
 
 def root_factory(request):
     return Root()
