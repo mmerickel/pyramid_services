@@ -84,9 +84,11 @@ def register_service_factory(
     intr = config.introspectable(
         category_name="pyramid_services",
         discriminator=discriminator,
-        title='service factories',
+        title=str((iface.__name__, context.__name__, name)),
         type_name=type_name,
     )
+    intr['name'] = name
+    intr['interface'] = iface
     config.action(
         discriminator,
         register,
