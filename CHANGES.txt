@@ -1,6 +1,12 @@
 unreleased
 ==========
 
+- Change ``find_service(..., context=None)`` to use a context of ``None``.
+  Previously this would fallback to using ``request.context`` if the
+  ``context`` was ``None``. Now ``find_service`` will only fallback to
+  ``request.context`` when no ``context`` argument is specified.
+  See https://github.com/mmerickel/pyramid_services/pull/3
+
 - Support ``introspectable`` for services so that they show up in the
   pyramid_debugtoolbar and elsewhere.
   See https://github.com/mmerickel/pyramid_services/pull/2
