@@ -61,7 +61,7 @@ Usage
 
 After registering services with the ``Configurator``, they are now
 accessible from the ``request`` object during a request lifecycle via the
-``request.find_service(iface=None, context=None, name='')``
+``request.find_service(iface=None, context=_marker, name='')``
 method. Unless a custom ``context`` is passed to ``find_service``, the
 lookup will default to using ``request.context``.
 
@@ -256,3 +256,6 @@ tutorials.
 
 - Most services may be implemented in such a way that they do not depend on
   Pyramid or a particular request object.
+
+- Different services may be returned based on a context, such as the
+  result of traversal or some other application-defined descriminator.
