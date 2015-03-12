@@ -1,4 +1,3 @@
-from pyramid.interfaces import IRequest
 from zope.interface import (
     Interface,
     implementedBy,
