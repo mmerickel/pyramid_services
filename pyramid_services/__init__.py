@@ -95,13 +95,9 @@ def register_service_factory(
         introspectables=(intr,),
     )
 
-def find_service(request, iface=None, context=_marker, name=''):
-    if iface is None:
-        iface = Interface
+def find_service(request, iface=Interface, context=_marker, name=''):
     if context is _marker:
         context = request.context
-    if name is None:
-        name = ''
 
     context_iface = providedBy(context)
     svc_types = (IServiceClassifier, context_iface)
