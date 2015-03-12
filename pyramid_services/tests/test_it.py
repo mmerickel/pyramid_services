@@ -1,9 +1,6 @@
 import pyramid.testing
 import unittest
-from zope.interface import (
-    Interface,
-    implementer,
-)
+from zope.interface import Interface
 import webtest
 
 class TestIntegration_register_service(unittest.TestCase):
@@ -90,24 +87,27 @@ class TestIntegration_register_service(unittest.TestCase):
         config.register_service(DummyService('bar'), IBarService, IFooService)
 
         introspector = config.registry.introspector
-        intr = introspector.get('pyramid_services',
-                                ('service factories', (IFooService, Interface, '')))
+        intr = introspector.get(
+            'pyramid_services',
+            ('service factories', (IFooService, Interface, '')))
         self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
         self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
-        intr = introspector.get('pyramid_services',
-                                ('service factories', (IFooService, Interface, 'foo2')))
+        intr = introspector.get(
+            'pyramid_services',
+            ('service factories', (IFooService, Interface, 'foo2')))
         self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "foo2")
         self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
-        intr = introspector.get('pyramid_services',
-                                ('service factories', (IBarService, IFooService, '')))
+        intr = introspector.get(
+            'pyramid_services',
+            ('service factories', (IBarService, IFooService, '')))
         self.assertEqual(intr.title, "('IBarService', 'IFooService', '')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
@@ -205,24 +205,27 @@ class TestIntegration_register_service_factory(unittest.TestCase):
             DummyServiceFactory('bar'), IBarService, IFooService)
 
         introspector = config.registry.introspector
-        intr = introspector.get('pyramid_services',
-                                ('service factories', (IFooService, Interface, '')))
+        intr = introspector.get(
+            'pyramid_services',
+            ('service factories', (IFooService, Interface, '')))
         self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
         self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
-        intr = introspector.get('pyramid_services',
-                                ('service factories', (IFooService, Interface, 'foo2')))
+        intr = introspector.get(
+            'pyramid_services',
+            ('service factories', (IFooService, Interface, 'foo2')))
         self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "foo2")
         self.assertEqual(intr["context"], Interface)
         self.assertEqual(intr["interface"], IFooService)
 
-        intr = introspector.get('pyramid_services',
-                                ('service factories', (IBarService, IFooService, '')))
+        intr = introspector.get(
+            'pyramid_services',
+            ('service factories', (IBarService, IFooService, '')))
         self.assertEqual(intr.title, "('IBarService', 'IFooService', '')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
@@ -273,5 +276,5 @@ class DummyView(object):
 
     def __call__(self, request):
         svc = request.find_service(
-           self.iface, context=self.context, name=self.name)
+            self.iface, context=self.context, name=self.name)
         return svc()
