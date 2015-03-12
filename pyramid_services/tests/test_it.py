@@ -140,6 +140,9 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config.add_view(
             DummyView(context=Root()), context=Leaf, name='baz',
             renderer='string')
+        config.add_view(
+            DummyView(context=None), context=Leaf, name='xyz',
+            renderer='string')
 
         app = self._makeApp()
         resp = app.get('/')
@@ -147,6 +150,8 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         resp = app.get('/leaf')
         self.assertEqual(resp.body, b'bar')
         resp = app.get('/leaf/baz')
+        self.assertEqual(resp.body, b'foo')
+        resp = app.get('/leaf/xyz')
         self.assertEqual(resp.body, b'foo')
 
     def test_name(self):
@@ -269,12 +274,9 @@ class DummyServiceFactory(object):
         return self.result
 
 class DummyView(object):
-    def __init__(self, iface=None, context=None, name=None):
-        self.iface = iface
-        self.context = context
-        self.name = name
+    def __init__(self, **kw):
+        self.kw = kw
 
     def __call__(self, request):
-        svc = request.find_service(
-            self.iface, context=self.context, name=self.name)
+        svc = request.find_service(**self.kw)
         return svc()

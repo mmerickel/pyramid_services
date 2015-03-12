@@ -6,6 +6,8 @@ from zope.interface import (
 from zope.interface.interfaces import IInterface
 from zope.interface.adapter import AdapterRegistry
 
+_marker = object()
+
 class IServiceClassifier(Interface):
     """ A marker interface to differentiate services from other objects
     in a shared registry."""
@@ -93,10 +95,10 @@ def register_service_factory(
         introspectables=(intr,),
     )
 
-def find_service(request, iface=None, context=None, name=''):
+def find_service(request, iface=None, context=_marker, name=''):
     if iface is None:
         iface = Interface
-    if context is None:
+    if context is _marker:
         context = request.context
     if name is None:
         name = ''
