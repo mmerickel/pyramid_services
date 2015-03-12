@@ -81,6 +81,40 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(resp.body, b'bar')
         self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
 
+    def test_introspectable(self):
+        config = self.config
+        config.set_root_factory(root_factory)
+
+        config.register_service(DummyService('foo'), IFooService)
+        config.register_service(DummyService('foo'), IFooService, name="foo2")
+        config.register_service(DummyService('bar'), IBarService, IFooService)
+
+        introspector = config.registry.introspector
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IFooService, Interface, '')))
+        self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
+        self.assertEqual(intr.type_name, "DummyService")
+        self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["interface"], IFooService)
+
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IFooService, Interface, 'foo2')))
+        self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
+        self.assertEqual(intr.type_name, "DummyService")
+        self.assertEqual(intr["name"], "foo2")
+        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["interface"], IFooService)
+
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IBarService, IFooService, '')))
+        self.assertEqual(intr.title, "('IBarService', 'IFooService', '')")
+        self.assertEqual(intr.type_name, "DummyService")
+        self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], IFooService)
+        self.assertEqual(intr["interface"], IBarService)
+
+
 class TestIntegration_register_service_factory(unittest.TestCase):
     def setUp(self):
         self.config = pyramid.testing.setUp()
@@ -158,6 +192,43 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         resp = app.get('/leaf/bar')
         self.assertEqual(resp.body, b'bar')
         self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
+
+    def test_introspectable(self):
+        config = self.config
+        config.set_root_factory(root_factory)
+
+        config.register_service_factory(
+            DummyServiceFactory('foo'), IFooService)
+        config.register_service_factory(
+            DummyServiceFactory('foo'), IFooService, name="foo2")
+        config.register_service_factory(
+            DummyServiceFactory('bar'), IBarService, IFooService)
+
+        introspector = config.registry.introspector
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IFooService, Interface, '')))
+        self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
+        self.assertEqual(intr.type_name, "DummyServiceFactory")
+        self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["interface"], IFooService)
+
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IFooService, Interface, 'foo2')))
+        self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
+        self.assertEqual(intr.type_name, "DummyServiceFactory")
+        self.assertEqual(intr["name"], "foo2")
+        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["interface"], IFooService)
+
+        intr = introspector.get('pyramid_services',
+                                ('service factories', (IBarService, IFooService, '')))
+        self.assertEqual(intr.title, "('IBarService', 'IFooService', '')")
+        self.assertEqual(intr.type_name, "DummyServiceFactory")
+        self.assertEqual(intr["name"], "")
+        self.assertEqual(intr["context"], IFooService)
+        self.assertEqual(intr["interface"], IBarService)
+
 
 def root_factory(request):
     return Root()
