@@ -13,6 +13,7 @@ class IServiceClassifier(Interface):
     in a shared registry."""
 
 def includeme(config):
+    config.add_request_method(find_service_factory)
     config.add_request_method(find_service)
     config.add_request_method(
         lambda _: AdapterRegistry(),
@@ -22,6 +23,7 @@ def includeme(config):
 
     config.add_directive('register_service', register_service)
     config.add_directive('register_service_factory', register_service_factory)
+    config.add_directive('find_service_factory', find_service_factory)
 
 class SingletonServiceWrapper(object):
     def __init__(self, service):
@@ -112,3 +114,18 @@ def find_service(request, iface=Interface, context=_marker, name=''):
         svc = svc_factory(context, request)
         cache.register(svc_types, iface, name, svc)
     return svc
+
+def find_service_factory(
+    config_or_request,
+    iface=Interface,
+    context=None,
+    name='',
+):
+    context_iface = providedBy(context)
+    svc_types = (IServiceClassifier, context_iface)
+
+    adapters = config_or_request.registry.adapters
+    svc_factory = adapters.lookup(svc_types, iface, name=name)
+    if svc_factory is None:
+        raise ValueError('could not find registered service')
+    return svc_factory
