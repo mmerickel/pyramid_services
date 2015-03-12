@@ -21,14 +21,12 @@ def includeme(config):
     config.add_directive('register_service', register_service)
     config.add_directive('register_service_factory', register_service_factory)
 
-
-class ServiceFactory(object):
+class SingletonServiceWrapper(object):
     def __init__(self, service):
         self.service = service
 
     def __call__(self, context, request):
         return self.service
-
 
 def register_service(
     config,
@@ -38,7 +36,7 @@ def register_service(
     name='',
 ):
     service = config.maybe_dotted(service)
-    service_factory = ServiceFactory(service)
+    service_factory = SingletonServiceWrapper(service)
     config.register_service_factory(
         service_factory,
         iface,
@@ -77,11 +75,11 @@ def register_service_factory(
 
     discriminator = ('service factories', (iface, context, name))
     type_name = type(service_factory).__name__
-    if isinstance(service_factory, ServiceFactory):
+    if isinstance(service_factory, SingletonServiceWrapper):
         type_name = type(service_factory.service).__name__
 
     intr = config.introspectable(
-        category_name="pyramid_services",
+        category_name='pyramid_services',
         discriminator=discriminator,
         title=str((iface.__name__, context.__name__, name)),
         type_name=type_name,
