@@ -1,7 +1,9 @@
-future
-================
+unreleased
+==========
 
-- support ``introspectable`` for services.
+- Support ``introspectable`` for services so that they show up in the
+  pyramid_debugtoolbar and elsewhere.
+  See https://github.com/mmerickel/pyramid_services/pull/2
 
 0.1.1 (2015-02-17)
 ==================
