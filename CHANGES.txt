@@ -1,5 +1,5 @@
-unreleased
-==========
+0.2 (2015-03-13)
+================
 
 - Change ``find_service(..., context=None)`` to use a context of ``None``.
   Previously this would fallback to using ``request.context`` if the

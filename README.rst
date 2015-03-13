@@ -244,7 +244,7 @@ And finally the home view will remain unchanged.
     return {'access_token': token}
 
 Hopefully this pattern is clear. It has several advantages over most basic
-tutorials.
+Pyramid tutorials.
 
 - The model is completely abstracted from the views, making both easy to
   test on their own.
@@ -258,4 +258,4 @@ tutorials.
   Pyramid or a particular request object.
 
 - Different services may be returned based on a context, such as the
-  result of traversal or some other application-defined descriminator.
+  result of traversal or some other application-defined discriminator.
