@@ -33,8 +33,8 @@ class SingletonServiceWrapper(object):
 def register_service(
     config,
     service,
-    iface=None,
-    context=None,
+    iface=Interface,
+    context=Interface,
     name='',
 ):
     service = config.maybe_dotted(service)
@@ -49,22 +49,18 @@ def register_service(
 def register_service_factory(
     config,
     service_factory,
-    iface=None,
-    context=None,
+    iface=Interface,
+    context=Interface,
     name='',
 ):
     service_factory = config.maybe_dotted(service_factory)
     iface = config.maybe_dotted(iface)
     context = config.maybe_dotted(context)
 
-    if iface is None:
-        iface = Interface
-    if context is None:
-        context = Interface
-
-    context_iface = context
-    if not IInterface.providedBy(context_iface):
-        context_iface = implementedBy(context_iface)
+    if not IInterface.providedBy(context):
+        context_iface = implementedBy(context)
+    else:
+        context_iface = context
 
     def register():
         adapters = config.registry.adapters
@@ -76,9 +72,10 @@ def register_service_factory(
         )
 
     discriminator = ('service factories', (iface, context, name))
-    type_name = type(service_factory).__name__
     if isinstance(service_factory, SingletonServiceWrapper):
         type_name = type(service_factory.service).__name__
+    else:
+        type_name = type(service_factory).__name__
 
     intr = config.introspectable(
         category_name='pyramid_services',
@@ -87,13 +84,9 @@ def register_service_factory(
         type_name=type_name,
     )
     intr['name'] = name
-    intr['interface'] = iface
+    intr['type'] = iface
     intr['context'] = context
-    config.action(
-        discriminator,
-        register,
-        introspectables=(intr,),
-    )
+    config.action(discriminator, register, introspectables=(intr,))
 
 def find_service(request, iface=Interface, context=_marker, name=''):
     if context is _marker:

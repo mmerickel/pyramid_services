@@ -41,14 +41,14 @@ Activate ``pyramid_services`` by including it into your pyramid application.
 
 This will add some new directives to your ``Configurator``.
 
-- ``config.register_service(obj, iface=None, context=None, name='')``
+- ``config.register_service(obj, iface=Interface, context=Interface, name='')``
 
   This method will register a service object for the supplied
   ``iface``, ``context``, and ``name``. This effectively registers a
   singleton for your application as the ``obj`` will always be returned when
   looking for a service.
 
-- ``config.register_service_factory(factory, iface=None, context=None, name='')``
+- ``config.register_service_factory(factory, iface=Interface, context=Interface, name='')``
 
   This method will register a factory for the supplied ``iface``,
   ``context``, and ``name``. The factory should be a callable accepting a
@@ -61,7 +61,7 @@ Usage
 
 After registering services with the ``Configurator``, they are now
 accessible from the ``request`` object during a request lifecycle via the
-``request.find_service(iface=None, context=_marker, name='')``
+``request.find_service(iface=Interface, context=_marker, name='')``
 method. Unless a custom ``context`` is passed to ``find_service``, the
 lookup will default to using ``request.context``.
 

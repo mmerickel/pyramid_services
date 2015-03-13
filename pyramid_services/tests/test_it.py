@@ -62,13 +62,13 @@ class TestIntegration_register_service(unittest.TestCase):
         config.register_service(DummyService('bar'), IBarService)
 
         config.add_view(
-            DummyView(iface=IFooService), context=Leaf, name='foo',
+            DummyView(IFooService), context=Leaf, name='foo',
             renderer='string')
         config.add_view(
-            DummyView(iface=IBarService), context=Leaf, name='bar',
+            DummyView(IBarService), context=Leaf, name='bar',
             renderer='string')
         config.add_view(
-            DummyView(iface=IBazService), context=Leaf, name='baz',
+            DummyView(IBazService), context=Leaf, name='baz',
             renderer='string')
 
         app = self._makeApp()
@@ -94,7 +94,7 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
         self.assertEqual(intr["context"], Interface)
-        self.assertEqual(intr["interface"], IFooService)
+        self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
             'pyramid_services',
@@ -103,7 +103,7 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "foo2")
         self.assertEqual(intr["context"], Interface)
-        self.assertEqual(intr["interface"], IFooService)
+        self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
             'pyramid_services',
@@ -112,7 +112,7 @@ class TestIntegration_register_service(unittest.TestCase):
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
         self.assertEqual(intr["context"], IFooService)
-        self.assertEqual(intr["interface"], IBarService)
+        self.assertEqual(intr["type"], IBarService)
 
 
 class TestIntegration_register_service_factory(unittest.TestCase):
@@ -182,13 +182,13 @@ class TestIntegration_register_service_factory(unittest.TestCase):
             DummyServiceFactory('bar'), IBarService)
 
         config.add_view(
-            DummyView(iface=IFooService), context=Leaf, name='foo',
+            DummyView(IFooService), context=Leaf, name='foo',
             renderer='string')
         config.add_view(
-            DummyView(iface=IBarService), context=Leaf, name='bar',
+            DummyView(IBarService), context=Leaf, name='bar',
             renderer='string')
         config.add_view(
-            DummyView(iface=IBazService), context=Leaf, name='baz',
+            DummyView(IBazService), context=Leaf, name='baz',
             renderer='string')
 
         app = self._makeApp()
@@ -217,7 +217,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
         self.assertEqual(intr["context"], Interface)
-        self.assertEqual(intr["interface"], IFooService)
+        self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
             'pyramid_services',
@@ -226,7 +226,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "foo2")
         self.assertEqual(intr["context"], Interface)
-        self.assertEqual(intr["interface"], IFooService)
+        self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
             'pyramid_services',
@@ -235,7 +235,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
         self.assertEqual(intr["context"], IFooService)
-        self.assertEqual(intr["interface"], IBarService)
+        self.assertEqual(intr["type"], IBarService)
 
 
 def root_factory(request):
@@ -274,9 +274,10 @@ class DummyServiceFactory(object):
         return self.result
 
 class DummyView(object):
-    def __init__(self, **kw):
+    def __init__(self, *a, **kw):
+        self.a = a
         self.kw = kw
 
     def __call__(self, request):
-        svc = request.find_service(**self.kw)
+        svc = request.find_service(*self.a, **self.kw)
         return svc()
