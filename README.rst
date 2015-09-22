@@ -18,13 +18,13 @@ Installation
 Install from `PyPI <https://pypi.python.org/pyramid_services>`__ using
 ``pip`` or ``easy_install`` inside a virtual environment.
 
-::
+.. code-block:: bash
 
   $ $VENV/bin/pip install pyramid_services
 
 Or install directly from source.
 
-::
+.. code-block:: bash
 
   $ git clone https://github.com/mmerickel/pyramid_services.git
   $ cd pyramid_services
@@ -35,7 +35,7 @@ Setup
 
 Activate ``pyramid_services`` by including it into your pyramid application.
 
-::
+.. code-block:: python
 
   config.include('pyramid_services')
 
@@ -65,7 +65,7 @@ accessible from the ``request`` object during a request lifecycle via the
 method. Unless a custom ``context`` is passed to ``find_service``, the
 lookup will default to using ``request.context``.
 
-::
+.. code-block:: python
 
   svc = request.find_service(ILoginService)
 
@@ -78,7 +78,7 @@ we want to use in our app.
 Basically all of the steps in configuring an interface are optional, but
 they are shown here as best practices.
 
-::
+.. code-block:: python
 
   # myapp/interfaces.py
 
@@ -90,7 +90,7 @@ they are shown here as best practices.
 
 With our interface we can now define a conforming instance.
 
-::
+.. code-block:: python
 
   # myapp/services.py
 
@@ -100,7 +100,7 @@ With our interface we can now define a conforming instance.
 
 Let's hook it up to our application.
 
-::
+.. code-block:: python
 
   # myapp/main.py
 
@@ -120,7 +120,7 @@ Let's hook it up to our application.
 
 Finally, let's create our view that utilizes the service.
 
-::
+.. code-block:: python
 
   # myapp/views.py
 
@@ -141,7 +141,7 @@ changing our view at all. Let's define a new ``PersistentLoginService``
 that gets tokens from a database. We're going to need to setup some
 database handling, but again nothing changes in the view.
 
-::
+.. code-block:: python
 
   # myapp/services.py
 
@@ -161,7 +161,7 @@ database handling, but again nothing changes in the view.
 Below is some boilerplate for configuring a model using the excellent
 `SQLAlchemy ORM <http://docs.sqlalchemy.org>`__.
 
-::
+.. code-block:: python
 
   # myapp/model.py
 
@@ -191,7 +191,7 @@ database connection for each service in a request. So we'll also add a
 service that encapsulates the database connection. Using this technique
 we can wire services together in the service layer.
 
-::
+.. code-block:: python
 
   # myapp/main.py
 
@@ -230,7 +230,7 @@ we can wire services together in the service layer.
 
 And finally the home view will remain unchanged.
 
-::
+.. code-block:: python
 
   # myapp/views.py
 
