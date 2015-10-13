@@ -271,7 +271,7 @@ successfully called ``register_service`` or ``register_service_factory``. Using
 get information about a registered service.
 
 Take as an example this test that verifies that ``dbsession_factory`` has been
-correctly registered. This assumes you have a ``myapp.dbsession`` package that
+correctly registered. This assumes you have a ``myapp.services`` package that
 contains an ``includeme()`` function.
 
 ::
