@@ -1,6 +1,11 @@
 0.3 (2015-12-12)
 ================
 
+- When using ``request.find_service`` during or before traversal the
+  ``request.context`` is not valid. In these situations the ``context``
+  parameter will default to ``None`` instead of raising an exception.
+  See https://github.com/mmerickel/pyramid_services/pull/8
+
 - Add ``config.find_service_factory`` and ``request.find_service_factory``.
   See https://github.com/mmerickel/pyramid_services/pull/4
 
