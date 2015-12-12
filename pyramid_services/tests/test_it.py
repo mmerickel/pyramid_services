@@ -237,6 +237,26 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr["context"], IFooService)
         self.assertEqual(intr["type"], IBarService)
 
+class TestIntegration_find_service_factory(unittest.TestCase):
+    def setUp(self):
+        self.config = pyramid.testing.setUp()
+        self.config.include('pyramid_services')
+
+    def tearDown(self):
+        pyramid.testing.tearDown()
+
+    def test_find_service_factory(self):
+        self.config.register_service_factory(DummyServiceFactory, IFooService)
+        self.assertEqual(DummyServiceFactory, self.config.find_service_factory(IFooService))
+
+    def test_find_service_factory_fail(self):
+        self.assertRaises(ValueError, self.config.find_service_factory, IFooService)
+
+    def test_find_service_factory_service(self):
+        svc = DummyService('test')
+        self.config.register_service(svc, IFooService)
+        self.assertEqual(svc, self.config.find_service_factory(IFooService).service)
+
 
 def root_factory(request):
     return Root()
