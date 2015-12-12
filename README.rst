@@ -259,3 +259,39 @@ tutorials.
 
 - Different services may be returned based on a context, such as the
   result of traversal or some other application-defined descriminator.
+
+Testing Examples
+================
+
+If you are writing an application that uses ``pyramid_services`` you may want
+to do some integration testing that verifies that your application has
+successfully called ``register_service`` or ``register_service_factory``. Using
+``Pyramid``'s ``testing`` module to create a ``Configurator`` and after calling
+``config.include('pyramid_services')`` you may use ``find_service_factory`` to
+get information about a registered service.
+
+Take as an example this test that verifies that ``dbsession_factory`` has been
+correctly registered. This assumes you have a ``myapp.services`` package that
+contains an ``includeme()`` function.
+
+::
+
+    # myapp/tests/test_integration.py
+
+    from myapp.services import dbsession_factory, login_factory, ILoginService
+
+    class TestIntegration_services(unittest.TestCase):
+        def setUp(self):
+            self.config = pyramid.testing.setUp()
+            self.config.include('pyramid_services')
+            self.config.include('myapp.services')
+
+        def tearDown(self):
+            pyramid.testing.tearDown()
+
+        def test_db_maker(self):
+            self.assertEqual(dbsession_factory, self.config.find_service_factory(name='db'))
+
+        def test_login_factory(self):
+            self.assertEqual(login_factory, interface=ILoginService)
+ 
