@@ -281,18 +281,18 @@ contains an ``includeme()`` function.
   from myapp.services import dbsession_factory, login_factory, ILoginService
 
   class TestIntegration_services(unittest.TestCase):
-      def setUp(self):
-          self.config = pyramid.testing.setUp()
-          self.config.include('pyramid_services')
-          self.config.include('myapp.services')
+    def setUp(self):
+      self.config = pyramid.testing.setUp()
+      self.config.include('pyramid_services')
+      self.config.include('myapp.services')
 
-      def tearDown(self):
-          pyramid.testing.tearDown()
+    def tearDown(self):
+      pyramid.testing.tearDown()
 
-      def test_db_maker(self):
-          result = self.config.find_service_factory(name='db')
-          self.assertEqual(result, dbsession_factory)
+    def test_db_maker(self):
+      result = self.config.find_service_factory(name='db')
+      self.assertEqual(result, dbsession_factory)
 
-      def test_login_factory(self):
-          result = self.config.find_service_factory(ILoginService)
-          self.assertEqual(result, login_factory)
+    def test_login_factory(self):
+      result = self.config.find_service_factory(ILoginService)
+      self.assertEqual(result, login_factory)
