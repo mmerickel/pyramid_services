@@ -1,3 +1,9 @@
+0.3 (2015-12-12)
+================
+
+- Add ``config.find_service_factory`` and ``request.find_service_factory``.
+  See https://github.com/mmerickel/pyramid_services/pull/4
+
 0.2 (2015-03-13)
 ================
 
