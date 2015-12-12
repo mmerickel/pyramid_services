@@ -237,6 +237,25 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(intr["context"], IFooService)
         self.assertEqual(intr["type"], IBarService)
 
+    def test_with_no_context(self):
+        config = self.config
+        config.register_service_factory(
+            DummyServiceFactory('foo'), IFooService)
+        config.add_view(DummyView(), context=Root, renderer='string')
+
+        called = [False]
+        def factory(request):
+            called[0] = True
+            svc = request.find_service(IFooService)
+            self.assertEqual(svc.result, 'foo')
+            return Root()
+        config.set_root_factory(factory)
+
+        app = self._makeApp()
+        resp = app.get('/')
+        self.assertEqual(resp.body, b'foo')
+        self.assertEqual(called, [True])
+
 class TestIntegration_find_service_factory(unittest.TestCase):
     def setUp(self):
         self.config = pyramid.testing.setUp()

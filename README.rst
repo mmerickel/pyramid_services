@@ -63,7 +63,9 @@ After registering services with the ``Configurator``, they are now
 accessible from the ``request`` object during a request lifecycle via the
 ``request.find_service(iface=Interface, context=_marker, name='')``
 method. Unless a custom ``context`` is passed to ``find_service``, the
-lookup will default to using ``request.context``.
+lookup will default to using ``request.context``. The ``context`` will default
+to ``None`` if a service is searched for during or before traversal in Pyramid
+when there may not be a ``request.context``.
 
 .. code-block:: python
 
