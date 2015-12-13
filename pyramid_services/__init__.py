@@ -92,7 +92,7 @@ def register_service_factory(
 
 def find_service(request, iface=Interface, context=_marker, name=''):
     if context is _marker:
-        context = request.context
+        context = getattr(request, 'context', None)
 
     context_iface = providedBy(context)
     svc_types = (IServiceClassifier, context_iface)
