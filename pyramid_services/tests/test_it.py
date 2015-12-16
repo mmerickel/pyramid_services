@@ -198,6 +198,32 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(resp.body, b'bar')
         self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
 
+    def test_iface_as_type(self):
+        config = self.config
+        config.set_root_factory(root_factory)
+
+        config.register_service_factory(
+            DummyServiceFactory('foo'), DummyService)
+        config.register_service_factory(
+            DummyServiceFactory('bar'), DummyService, context=Leaf)
+
+        config.add_view(
+            DummyView(DummyService), name='foo',
+            renderer='string')
+        config.add_view(
+            DummyView(DummyService), context=Leaf, name='bar',
+            renderer='string')
+        config.add_view(
+            DummyView(IBazService), context=Leaf, name='baz',
+            renderer='string')
+
+        app = self._makeApp()
+        resp = app.get('/leaf/foo')
+        self.assertEqual(resp.body, b'foo')
+        resp = app.get('/leaf/bar')
+        self.assertEqual(resp.body, b'bar')
+        self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
+
     def test_introspectable(self):
         config = self.config
         config.set_root_factory(root_factory)
