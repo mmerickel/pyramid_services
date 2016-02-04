@@ -256,6 +256,25 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(resp.body, b'foo')
         self.assertEqual(called, [True])
 
+    def test_context_does_not_affect_cache(self):
+        config = self.config
+
+        config.register_service_factory(
+            lambda ctx, req: DummyService('foo'), name='foo')
+
+        def dummy_view(context, request):
+            s1 = request.find_service(name='foo', context=Root())
+            s2 = request.find_service(name='foo', context=Leaf())
+            self.assertTrue(s1 is s2)
+            return s1.result
+
+        config.add_view(dummy_view, renderer='string')
+
+        app = self._makeApp()
+        resp = app.get('/')
+        self.assertEqual(resp.body, b'foo')
+
+
 class TestIntegration_find_service_factory(unittest.TestCase):
     def setUp(self):
         self.config = pyramid.testing.setUp()
@@ -305,12 +324,12 @@ class DummyService(object):
 
 class DummyServiceFactory(object):
     def __init__(self, result):
-        self.result = DummyService(result)
+        self.result = result
 
     def __call__(self, context, request):
         self.context = context
         self.request = request
-        return self.result
+        return DummyService(self.result)
 
 class DummyView(object):
     def __init__(self, *a, **kw):
@@ -318,5 +337,5 @@ class DummyView(object):
         self.kw = kw
 
     def __call__(self, request):
-        svc = request.find_service(*self.a, **self.kw)
-        return svc()
+        self.svc = request.find_service(*self.a, **self.kw)
+        return self.svc()

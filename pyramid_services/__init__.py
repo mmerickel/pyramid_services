@@ -25,6 +25,11 @@ def includeme(config):
     config.add_directive('register_service_factory', register_service_factory)
     config.add_directive('find_service_factory', find_service_factory)
 
+class ServiceInfo(object):
+    def __init__(self, factory, context_iface):
+        self.factory = factory
+        self.context_iface = context_iface
+
 class SingletonServiceWrapper(object):
     def __init__(self, service):
         self.service = service
@@ -64,13 +69,15 @@ def register_service_factory(
     else:
         context_iface = context
 
+    info = ServiceInfo(service_factory, context_iface)
+
     def register():
         adapters = config.registry.adapters
         adapters.register(
             (IServiceClassifier, context_iface),
             iface,
             name,
-            service_factory,
+            info,
         )
 
     discriminator = ('service factories', (iface, context, name))
@@ -101,11 +108,16 @@ def find_service(request, iface=Interface, context=_marker, name=''):
     svc = cache.lookup(svc_types, iface, name=name, default=None)
     if svc is None:
         adapters = request.registry.adapters
-        svc_factory = adapters.lookup(svc_types, iface, name=name)
-        if svc_factory is None:
+        info = adapters.lookup(svc_types, iface, name=name)
+        if info is None:
             raise ValueError('could not find registered service')
-        svc = svc_factory(context, request)
-        cache.register(svc_types, iface, name, svc)
+        svc = info.factory(context, request)
+        cache.register(
+            (IServiceClassifier, info.context_iface),
+            iface,
+            name,
+            svc,
+        )
     return svc
 
 def find_service_factory(
@@ -118,7 +130,7 @@ def find_service_factory(
     svc_types = (IServiceClassifier, context_iface)
 
     adapters = config_or_request.registry.adapters
-    svc_factory = adapters.lookup(svc_types, iface, name=name)
-    if svc_factory is None:
+    info = adapters.lookup(svc_types, iface, name=name)
+    if info is None:
         raise ValueError('could not find registered service')
-    return svc_factory
+    return info.factory
