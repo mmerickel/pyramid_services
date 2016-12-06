@@ -15,7 +15,7 @@ pluggable service layer from within your Pyramid apps.
 Installation
 ============
 
-Install from `PyPI <https://pypi.python.org/pyramid_services>`__ using
+Install from `PyPI <https://pypi.python.org/pypi/pyramid_services>`__ using
 ``pip`` or ``easy_install`` inside a virtual environment.
 
 .. code-block:: bash
