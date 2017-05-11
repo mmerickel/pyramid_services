@@ -14,8 +14,8 @@ requires = [
 ]
 
 tests_require = requires + [
-    'coverage',
-    'nose',
+    'pytest',
+    'pytest-cov',
     'webtest',
 ]
 
@@ -31,18 +31,20 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     keywords='pyramid services service layer',
     author='Michael Merickel',
-    author_email='michael@merickel.org',
+    author_email='pylons-discuss@googlegroups.com',
     url='https://github.com/mmerickel/pyramid_services',
+    license='MIT',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,

@@ -1,0 +1,12 @@
+[run]
+source =
+    pyramid_services
+
+[paths]
+source =
+    pyramid_services
+    */site-packages/pyramid_services
+
+[report]
+show_missing = true
+precision = 2
