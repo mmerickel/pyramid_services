@@ -1,3 +1,9 @@
+unreleased
+==========
+
+- Allow the ``iface`` argument to be an arbitrary Python object / class.
+  See https://github.com/mmerickel/pyramid_services/pull/10
+
 0.4 (2016-02-03)
 ================
 
