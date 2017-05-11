@@ -1,8 +1,16 @@
-unreleased
-==========
+1.0 (2017-05-11)
+================
+
+Features
+--------
 
 - Allow the ``iface`` argument to be an arbitrary Python object / class.
   See https://github.com/mmerickel/pyramid_services/pull/10
+
+Backward Incompatibilities
+--------------------------
+
+- Drop Python 2.6 and Python 3.3 support.
 
 0.4 (2016-02-03)
 ================
