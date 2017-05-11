@@ -1,12 +1,11 @@
-import os
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
-try:
-    README = open(os.path.join(here, 'README.rst')).read()
-    CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
-except IOError:
-    README = CHANGES = ''
+def readfile(name):
+    with open(name) as f:
+        return f.read()
+
+readme = readfile('README.rst')
+changes = readfile('CHANGES.rst')
 
 requires = [
     'pyramid',
@@ -23,7 +22,7 @@ setup(
     name='pyramid_services',
     version='0.4',
     description='A service layer abstraction for the Pyramid Web Framework.',
-    long_description=README + '\n\n' + CHANGES,
+    long_description=readme + '\n\n' + changes,
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -45,8 +44,10 @@ setup(
     author_email='pylons-discuss@googlegroups.com',
     url='https://github.com/mmerickel/pyramid_services',
     license='MIT',
-    packages=find_packages(),
+    packages=find_packages('src', exclude=['tests']),
+    package_dir={'': 'src'},
     include_package_data=True,
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
     zip_safe=False,
     install_requires=requires,
     extras_require={

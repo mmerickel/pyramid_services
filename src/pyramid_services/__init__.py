@@ -9,9 +9,11 @@ from zope.interface.adapter import AdapterRegistry
 
 _marker = object()
 
+
 class IServiceClassifier(Interface):
     """ A marker interface to differentiate services from other objects
     in a shared registry."""
+
 
 def includeme(config):
     config.add_request_method(find_service_factory)
@@ -26,10 +28,12 @@ def includeme(config):
     config.add_directive('register_service_factory', register_service_factory)
     config.add_directive('find_service_factory', find_service_factory)
 
+
 class ServiceInfo(object):
     def __init__(self, factory, context_iface):
         self.factory = factory
         self.context_iface = context_iface
+
 
 class SingletonServiceWrapper(object):
     def __init__(self, service):
@@ -37,6 +41,7 @@ class SingletonServiceWrapper(object):
 
     def __call__(self, context, request):
         return self.service
+
 
 def register_service(
     config,
@@ -53,6 +58,7 @@ def register_service(
         context=context,
         name=name,
     )
+
 
 def register_service_factory(
     config,
@@ -100,6 +106,7 @@ def register_service_factory(
     intr['context'] = context
     config.action(discriminator, register, introspectables=(intr,))
 
+
 def find_service(request, iface=Interface, context=_marker, name=''):
     if context is _marker:
         context = getattr(request, 'context', None)
@@ -124,6 +131,7 @@ def find_service(request, iface=Interface, context=_marker, name=''):
         )
     return svc
 
+
 def find_service_factory(
     config_or_request,
     iface=Interface,
@@ -139,6 +147,7 @@ def find_service_factory(
     if info is None:
         raise ValueError('could not find registered service')
     return info.factory
+
 
 def _resolve_iface(obj):
     # if the object is an interface then we can quit early
@@ -158,6 +167,7 @@ def _resolve_iface(obj):
     )
     obj._service_iface = iface
     return iface
+
 
 def _type_name(obj):
     name = getattr(obj, '__name__', None)

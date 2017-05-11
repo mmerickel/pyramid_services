@@ -1,3 +1,11 @@
+graft src
+graft tests
+
 include README.rst
-include CHANGES.txt
+include CHANGES.rst
 include LICENSE.txt
+
+include .coveragerc
+include tox.ini .travis.yml
+
+recursive-exclude * __pycache__ *.py[cod]

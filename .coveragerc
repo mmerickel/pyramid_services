@@ -1,10 +1,12 @@
 [run]
+parallel = true
 source =
     pyramid_services
+    tests
 
 [paths]
 source =
-    pyramid_services
+    src/pyramid_services
     */site-packages/pyramid_services
 
 [report]
