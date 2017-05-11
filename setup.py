@@ -20,19 +20,18 @@ tests_require = requires + [
 
 setup(
     name='pyramid_services',
-    version='0.4',
+    version='1.0',
     description='A service layer abstraction for the Pyramid Web Framework.',
     long_description=readme + '\n\n' + changes,
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Framework :: Pyramid',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
