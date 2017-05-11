@@ -3,6 +3,7 @@ from zope.interface import (
     implementedBy,
     providedBy,
 )
+from zope.interface.interface import InterfaceClass
 from zope.interface.interfaces import IInterface
 from zope.interface.adapter import AdapterRegistry
 
@@ -61,13 +62,15 @@ def register_service_factory(
     name='',
 ):
     service_factory = config.maybe_dotted(service_factory)
-    iface = config.maybe_dotted(iface)
+    orig_iface = config.maybe_dotted(iface)
     context = config.maybe_dotted(context)
 
     if not IInterface.providedBy(context):
         context_iface = implementedBy(context)
     else:
         context_iface = context
+
+    iface = _resolve_iface(orig_iface)
 
     info = ServiceInfo(service_factory, context_iface)
 
@@ -80,20 +83,20 @@ def register_service_factory(
             info,
         )
 
-    discriminator = ('service factories', (iface, context, name))
+    discriminator = ('service factories', (orig_iface, context, name))
     if isinstance(service_factory, SingletonServiceWrapper):
-        type_name = type(service_factory.service).__name__
+        type_name = _type_name(service_factory.service)
     else:
-        type_name = type(service_factory).__name__
+        type_name = _type_name(service_factory)
 
     intr = config.introspectable(
         category_name='pyramid_services',
         discriminator=discriminator,
-        title=str((iface.__name__, context.__name__, name)),
+        title=str((_type_name(orig_iface), _type_name(context), name)),
         type_name=type_name,
     )
     intr['name'] = name
-    intr['type'] = iface
+    intr['type'] = orig_iface
     intr['context'] = context
     config.action(discriminator, register, introspectables=(intr,))
 
@@ -101,6 +104,7 @@ def find_service(request, iface=Interface, context=_marker, name=''):
     if context is _marker:
         context = getattr(request, 'context', None)
 
+    iface = _resolve_iface(iface)
     context_iface = providedBy(context)
     svc_types = (IServiceClassifier, context_iface)
 
@@ -126,6 +130,7 @@ def find_service_factory(
     context=None,
     name='',
 ):
+    iface = _resolve_iface(iface)
     context_iface = providedBy(context)
     svc_types = (IServiceClassifier, context_iface)
 
@@ -134,3 +139,28 @@ def find_service_factory(
     if info is None:
         raise ValueError('could not find registered service')
     return info.factory
+
+def _resolve_iface(obj):
+    # if the object is an interface then we can quit early
+    if IInterface.providedBy(obj):
+        return obj
+
+    # look for a cached iface
+    iface = getattr(obj, '_service_iface', None)
+    if iface is not None:
+        return iface
+
+    # make a new iface and cache it on the object
+    name = _type_name(obj)
+    iface = InterfaceClass(
+        '%s_IService' % name,
+        __doc__='pyramid_services generated interface',
+    )
+    obj._service_iface = iface
+    return iface
+
+def _type_name(obj):
+    name = getattr(obj, '__name__', None)
+    if name is None:
+        name = type(obj).__name__
+    return name

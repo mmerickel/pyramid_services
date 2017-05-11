@@ -177,9 +177,9 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config.set_root_factory(root_factory)
 
         config.register_service_factory(
-            DummyServiceFactory('foo'), IFooService)
+            DummyServiceFactory('foo'), IFooService, context=Leaf)
         config.register_service_factory(
-            DummyServiceFactory('bar'), IBarService)
+            DummyServiceFactory('bar'), IBarService, context=Leaf)
 
         config.add_view(
             DummyView(IFooService), context=Leaf, name='foo',
@@ -198,23 +198,29 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         self.assertEqual(resp.body, b'bar')
         self.assertRaises(Exception, lambda: app.get('/leaf/baz'))
 
-    def test_iface_as_type(self):
+    def test_iface_as_class(self):
         config = self.config
         config.set_root_factory(root_factory)
 
+        class FooService(DummyService):
+            pass
+
+        class BarService(DummyService):
+            pass
+
         config.register_service_factory(
-            DummyServiceFactory('foo'), DummyService)
+            DummyServiceFactory('foo'), FooService, context=Leaf)
         config.register_service_factory(
-            DummyServiceFactory('bar'), DummyService, context=Leaf)
+            DummyServiceFactory('bar'), BarService, context=Leaf)
 
         config.add_view(
-            DummyView(DummyService), name='foo',
+            DummyView(FooService), context=Leaf, name='foo',
             renderer='string')
         config.add_view(
-            DummyView(DummyService), context=Leaf, name='bar',
+            DummyView(BarService), context=Leaf, name='bar',
             renderer='string')
         config.add_view(
-            DummyView(IBazService), context=Leaf, name='baz',
+            DummyView(DummyService), context=Leaf, name='baz',
             renderer='string')
 
         app = self._makeApp()
@@ -311,7 +317,10 @@ class TestIntegration_find_service_factory(unittest.TestCase):
 
     def test_find_service_factory(self):
         self.config.register_service_factory(DummyServiceFactory, IFooService)
-        self.assertEqual(DummyServiceFactory, self.config.find_service_factory(IFooService))
+        self.assertEqual(
+            DummyServiceFactory,
+            self.config.find_service_factory(IFooService),
+        )
 
     def test_find_service_factory_fail(self):
         self.assertRaises(ValueError, self.config.find_service_factory, IFooService)
