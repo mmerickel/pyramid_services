@@ -1,3 +1,13 @@
+1.1 (2017-05-31)
+================
+
+Features
+--------
+
+- If the ``iface`` is a class then it must be the exact class that was
+  registered originally. Subclasses are not identified as implementing
+  the same interface at this time due to internal limitations.
+
 1.0 (2017-05-11)
 ================
 

@@ -155,7 +155,7 @@ def _resolve_iface(obj):
         return obj
 
     # look for a cached iface
-    iface = getattr(obj, '_service_iface', None)
+    iface = obj.__dict__.get('_service_iface', None)
     if iface is not None:
         return iface
 
