@@ -19,13 +19,13 @@ class TestIntegration_register_service(unittest.TestCase):
         config = self.config
         config.set_root_factory(root_factory)
 
-        config.register_service(DummyService('foo'))
-        config.register_service(DummyService('bar'), context=Leaf)
+        config.register_service(DummyService('foo'), IFooService)
+        config.register_service(DummyService('bar'), IFooService, context=Leaf)
 
-        config.add_view(DummyView(), context=Root, renderer='string')
-        config.add_view(DummyView(), context=Leaf, renderer='string')
+        config.add_view(DummyView(IFooService), context=Root, renderer='string')
+        config.add_view(DummyView(IFooService), context=Leaf, renderer='string')
         config.add_view(
-            DummyView(context=Root()), context=Leaf, name='baz',
+            DummyView(IFooService, context=Root()), context=Leaf, name='baz',
             renderer='string')
 
         app = self._makeApp()
@@ -89,20 +89,20 @@ class TestIntegration_register_service(unittest.TestCase):
         introspector = config.registry.introspector
         intr = introspector.get(
             'pyramid_services',
-            ('service factories', (IFooService, Interface, '')))
-        self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
+            ('service factories', (IFooService, None, '')))
+        self.assertEqual(intr.title, "('IFooService', 'NoneType', '')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "")
-        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["context"], None)
         self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
             'pyramid_services',
-            ('service factories', (IFooService, Interface, 'foo2')))
-        self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
+            ('service factories', (IFooService, None, 'foo2')))
+        self.assertEqual(intr.title, "('IFooService', 'NoneType', 'foo2')")
         self.assertEqual(intr.type_name, "DummyService")
         self.assertEqual(intr["name"], "foo2")
-        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["context"], None)
         self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
@@ -131,17 +131,17 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config = self.config
         config.set_root_factory(root_factory)
 
-        config.register_service_factory(DummyServiceFactory('foo'))
+        config.register_service_factory(DummyServiceFactory('foo'), IFooService)
         config.register_service_factory(
-            DummyServiceFactory('bar'), context=Leaf)
+            DummyServiceFactory('bar'), IFooService, context=Leaf)
 
-        config.add_view(DummyView(), context=Root, renderer='string')
-        config.add_view(DummyView(), context=Leaf, renderer='string')
+        config.add_view(DummyView(IFooService), context=Root, renderer='string')
+        config.add_view(DummyView(IFooService), context=Leaf, renderer='string')
         config.add_view(
-            DummyView(context=Root()), context=Leaf, name='baz',
+            DummyView(IFooService, context=Root()), context=Leaf, name='baz',
             renderer='string')
         config.add_view(
-            DummyView(context=None), context=Leaf, name='xyz',
+            DummyView(IFooService, context=None), context=Leaf, name='xyz',
             renderer='string')
 
         app = self._makeApp()
@@ -244,20 +244,20 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         introspector = config.registry.introspector
         intr = introspector.get(
             'pyramid_services',
-            ('service factories', (IFooService, Interface, '')))
-        self.assertEqual(intr.title, "('IFooService', 'Interface', '')")
+            ('service factories', (IFooService, None, '')))
+        self.assertEqual(intr.title, "('IFooService', 'NoneType', '')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "")
-        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["context"], None)
         self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
             'pyramid_services',
-            ('service factories', (IFooService, Interface, 'foo2')))
-        self.assertEqual(intr.title, "('IFooService', 'Interface', 'foo2')")
+            ('service factories', (IFooService, None, 'foo2')))
+        self.assertEqual(intr.title, "('IFooService', 'NoneType', 'foo2')")
         self.assertEqual(intr.type_name, "DummyServiceFactory")
         self.assertEqual(intr["name"], "foo2")
-        self.assertEqual(intr["context"], Interface)
+        self.assertEqual(intr["context"], None)
         self.assertEqual(intr["type"], IFooService)
 
         intr = introspector.get(
@@ -323,7 +323,7 @@ class TestIntegration_find_service_factory(unittest.TestCase):
         )
 
     def test_find_service_factory_fail(self):
-        self.assertRaises(ValueError, self.config.find_service_factory, IFooService)
+        self.assertRaises(LookupError, self.config.find_service_factory, IFooService)
 
     def test_find_service_factory_service(self):
         svc = DummyService('test')
