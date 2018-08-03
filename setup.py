@@ -9,6 +9,7 @@ changes = readfile('CHANGES.rst')
 
 requires = [
     'pyramid',
+    'wired',
     'zope.interface',
 ]
 
@@ -20,7 +21,7 @@ tests_require = requires + [
 
 setup(
     name='pyramid_services',
-    version='1.1',
+    version='2.0',
     description='A service layer abstraction for the Pyramid Web Framework.',
     long_description=readme + '\n\n' + changes,
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -31,14 +32,13 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
-    keywords='pyramid services service layer',
+    keywords='pyramid services service layer ioc container',
     author='Michael Merickel',
     author_email='pylons-discuss@googlegroups.com',
     url='https://github.com/mmerickel/pyramid_services',
@@ -46,7 +46,7 @@ setup(
     packages=find_packages('src', exclude=['tests']),
     package_dir={'': 'src'},
     include_package_data=True,
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
+    python_requires='>=3.3',
     zip_safe=False,
     install_requires=requires,
     extras_require={
