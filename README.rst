@@ -56,6 +56,11 @@ This will add some new directives to your ``Configurator``.
   factory will be used at most once per ``request``/``context``/``name``
   combination.
 
+- ``config.set_service_registry(registry)``
+
+  This method will let you set a custom ``wired.ServiceRegistry`` instance
+  which is the backing registry for all services.
+
 Usage
 =====
 
@@ -70,6 +75,30 @@ when there may not be a ``request.context``.
 .. code-block:: python
 
   svc = request.find_service(ILoginService)
+
+Registering per-request services
+--------------------------------
+
+Some services (like your database connection) may need a transaction manager
+and the best way to do that is by using ``pyramid_tm`` and hooking the
+``request.tm`` transaction manager into your service container. The
+request object itself is already added to the container for the
+``pyramid.interfaces.IRequest`` interface and can be used in factories that
+require the request.
+
+This can be done before any services are instantiated by subscribing to the
+``pyramid_services.NewServiceContainer`` event:
+
+.. code-block:: python
+
+  from pyramid_services import NewServiceContainer
+
+  def on_new_container(event):
+      container = event.container
+      request = event.request
+      container.set(request.tm, name='tm')
+
+  config.add_subscriber(new_container, NewServiceContainer)
 
 Examples
 ========

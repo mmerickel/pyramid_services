@@ -309,6 +309,24 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         resp = app.get('/')
         self.assertEqual(resp.body, b'foo')
 
+    def test_new_container_event(self):
+        from pyramid_services import NewServiceContainer
+        config = self.config
+        svc = DummyService('foo')
+
+        def on_new_container(event):
+            event.container.set(svc, name='dummy')
+
+        def dummy_view(request):
+            self.assertTrue(request.find_service(name='dummy') is svc)
+            return svc.result
+
+        config.add_subscriber(on_new_container, NewServiceContainer)
+        config.add_view(dummy_view, renderer='string')
+        app = self._makeApp()
+        resp = app.get('/')
+        self.assertEqual(resp.body, b'foo')
+
 
 class TestIntegration_find_service_factory(unittest.TestCase):
     def setUp(self):

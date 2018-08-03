@@ -28,6 +28,22 @@ class ProxyFactory:
         return self.factory(container.context, request)
 
 
+class NewServiceContainer:
+    """
+    Event emitted when a request creates a service container.
+
+    This is useful for registering any per-request services like as a way
+    to inject ``request.tm`` into your container as the transaction manager.
+
+    :ivar container: The service container.
+    :ivar request: The request.
+
+    """
+    def __init__(self, container, request):
+        self.container = container
+        self.request = request
+
+
 def includeme(config):
     config.add_request_method(find_service_factory)
     config.add_request_method(find_service)
@@ -133,6 +149,8 @@ def get_services(request):
     registry = request.registry.getUtility(IServiceRegistry)
     container = registry.create_container()
     container.set(request, IRequest)
+
+    request.registry.notify(NewServiceContainer(container, request))
     return container
 
 
