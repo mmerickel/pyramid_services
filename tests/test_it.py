@@ -1,7 +1,8 @@
 import pyramid.testing
 import unittest
-from zope.interface import Interface
 import webtest
+from wired.container import ServiceRegistry
+from zope.interface import Interface
 
 
 class TestIntegration_register_service(unittest.TestCase):
@@ -336,6 +337,18 @@ class TestIntegration_find_service_factory(unittest.TestCase):
         self.assertEqual(
             svc,
             self.config.find_service_factory(IFooService).service,
+        )
+
+    def test_external_factory(self):
+        services = ServiceRegistry()
+
+        def my_factory(services):  # pragma: no cover
+            pass
+        services.register_factory(my_factory, IFooService)
+        self.config.set_service_registry(services)
+        self.assertEqual(
+            my_factory,
+            self.config.find_service_factory(IFooService),
         )
 
 
