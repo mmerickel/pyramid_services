@@ -1,3 +1,13 @@
+2.0 (2018-08-03)
+================
+
+- Drop support for Python 2.7.
+
+- Replace service lookup with https://wired.readthedocs.io under the hood.
+
+- Fixes service lookup with custom contexts such that the context is passed
+  through to nested service lookups.
+
 1.1 (2017-05-31)
 ================
 
