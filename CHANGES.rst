@@ -1,3 +1,9 @@
+2.1 (2018-08-03)
+================
+
+- Add a ``NewServiceContainer`` event that is emitted when the service
+  container is created before any calls to ``request.find_service``.
+
 2.0 (2018-08-03)
 ================
 
