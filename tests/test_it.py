@@ -3,6 +3,7 @@ import unittest
 from zope.interface import Interface
 import webtest
 
+
 class TestIntegration_register_service(unittest.TestCase):
     def setUp(self):
         self.config = pyramid.testing.setUp()
@@ -276,6 +277,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config.add_view(DummyView(), context=Root, renderer='string')
 
         called = [False]
+
         def factory(request):
             called[0] = True
             svc = request.find_service(IFooService)
@@ -323,32 +325,44 @@ class TestIntegration_find_service_factory(unittest.TestCase):
         )
 
     def test_find_service_factory_fail(self):
-        self.assertRaises(LookupError, self.config.find_service_factory, IFooService)
+        self.assertRaises(
+            LookupError,
+            lambda: self.config.find_service_factory(IFooService),
+        )
 
     def test_find_service_factory_service(self):
         svc = DummyService('test')
         self.config.register_service(svc, IFooService)
-        self.assertEqual(svc, self.config.find_service_factory(IFooService).service)
+        self.assertEqual(
+            svc,
+            self.config.find_service_factory(IFooService).service,
+        )
 
 
 def root_factory(request):
     return Root()
 
+
 class Root(object):
     def __getitem__(self, key):
         return Leaf()
 
+
 class Leaf(object):
     pass
+
 
 class IFooService(Interface):
     pass
 
+
 class IBarService(IFooService):
     pass
 
+
 class IBazService(IFooService):
     pass
+
 
 class DummyService(object):
     def __init__(self, result):
@@ -356,6 +370,7 @@ class DummyService(object):
 
     def __call__(self):
         return self.result
+
 
 class DummyServiceFactory(object):
     def __init__(self, result):
@@ -365,6 +380,7 @@ class DummyServiceFactory(object):
         self.context = context
         self.request = request
         return DummyService(self.result)
+
 
 class DummyView(object):
     def __init__(self, *a, **kw):
