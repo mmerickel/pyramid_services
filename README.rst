@@ -98,7 +98,7 @@ This can be done before any services are instantiated by subscribing to the
       request = event.request
       container.set(request.tm, name='tm')
 
-  config.add_subscriber(new_container, NewServiceContainer)
+  config.add_subscriber(on_new_container, NewServiceContainer)
 
 Examples
 ========
