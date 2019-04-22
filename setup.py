@@ -1,23 +1,17 @@
 from setuptools import setup, find_packages
 
+
 def readfile(name):
     with open(name) as f:
         return f.read()
 
+
 readme = readfile('README.rst')
 changes = readfile('CHANGES.rst')
 
-requires = [
-    'pyramid',
-    'wired',
-    'zope.interface',
-]
+requires = ['pyramid', 'wired', 'zope.interface']
 
-tests_require = requires + [
-    'pytest',
-    'pytest-cov',
-    'webtest',
-]
+tests_require = requires + ['pytest', 'pytest-cov', 'webtest']
 
 setup(
     name='pyramid_services',
@@ -49,11 +43,8 @@ setup(
     python_requires='>=3.3',
     zip_safe=False,
     install_requires=requires,
-    extras_require={
-        'testing': tests_require,
-    },
+    extras_require={'testing': tests_require},
     tests_require=tests_require,
     test_suite='pyramid_services',
-    entry_points={
-    },
+    entry_points={},
 )

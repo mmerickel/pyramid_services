@@ -5,7 +5,8 @@ include README.rst
 include CHANGES.rst
 include LICENSE.txt
 
-include .coveragerc
+include pyproject.toml setup.cfg
+include .coveragerc .flake8
 include tox.ini .travis.yml
 
 recursive-exclude * __pycache__ *.py[cod]
