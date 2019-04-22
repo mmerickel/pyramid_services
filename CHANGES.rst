@@ -1,5 +1,5 @@
-unreleased
-==========
+2.2 (2019-04-22)
+================
 
 - Depend on ``wired >= 0.2`` to use the new
   ``wired.ServiceContainer.register_singleton`` api.

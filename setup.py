@@ -19,7 +19,7 @@ tests_require = requires + ['pytest', 'pytest-cov', 'webtest']
 
 setup(
     name='pyramid_services',
-    version='2.1',
+    version='2.2',
     description='A service layer abstraction for the Pyramid Web Framework.',
     long_description=readme + '\n\n' + changes,
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
