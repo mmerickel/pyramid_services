@@ -131,7 +131,7 @@ def find_service_factory(
 def get_services(request):
     registry = request.registry.getUtility(IServiceRegistry)
     container = registry.create_container()
-    container.set(request, IRequest)
+    container.register_singleton(request, IRequest)
 
     request.registry.notify(NewServiceContainer(container, request))
     return container

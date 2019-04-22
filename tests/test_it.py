@@ -357,7 +357,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         svc = DummyService("foo")
 
         def on_new_container(event):
-            event.container.set(svc, name="dummy")
+            event.container.register_singleton(svc, name="dummy")
 
         def dummy_view(request):
             self.assertTrue(request.find_service(name="dummy") is svc)

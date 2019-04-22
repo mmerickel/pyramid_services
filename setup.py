@@ -9,7 +9,11 @@ def readfile(name):
 readme = readfile('README.rst')
 changes = readfile('CHANGES.rst')
 
-requires = ['pyramid', 'wired', 'zope.interface']
+requires = [
+    'pyramid',
+    'wired >= 0.2',  # container.register_singleton
+    'zope.interface',
+]
 
 tests_require = requires + ['pytest', 'pytest-cov', 'webtest']
 
@@ -32,7 +36,9 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
-    keywords='pyramid services service layer ioc container',
+    keywords=','.join(
+        ['pyramid', 'services', 'service layer', 'ioc container']
+    ),
     author='Michael Merickel',
     author_email='pylons-discuss@googlegroups.com',
     url='https://github.com/mmerickel/pyramid_services',
