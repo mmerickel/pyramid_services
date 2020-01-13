@@ -133,8 +133,14 @@ def get_services(request):
     container = registry.create_container()
     container.register_singleton(request, IRequest)
 
+    request.add_finished_callback(cleanup_request)
+
     request.registry.notify(NewServiceContainer(container, request))
     return container
+
+
+def cleanup_request(request):
+    request.__dict__.pop('services', None)
 
 
 def find_service(request, iface=Interface, context=_marker, name=""):
