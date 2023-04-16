@@ -2,9 +2,12 @@
 pyramid_services
 ================
 
-.. image:: https://travis-ci.org/mmerickel/pyramid_services.svg?branch=master
-   :alt: Travis-CI Build Status
-   :target: https://travis-ci.org/mmerickel/pyramid_services
+.. image:: https://img.shields.io/pypi/v/pyramid_services.svg
+    :target: https://pypi.org/pypi/pyramid_services
+
+.. image:: https://github.com/mmerickel/pyramid_services/workflows/Build%20and%20test/badge.svg?branch=main
+    :target: https://github.com/mmerickel/pyramid_services/actions?query=workflow%3A%22Build+and+test%22
+    :alt: main CI Status
 
 The core of a service layer that integrates with the
 `Pyramid Web Framework <https://docs.pylonsproject.org/projects/pyramid>`__.
