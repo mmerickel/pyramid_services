@@ -395,12 +395,12 @@ def root_factory(request):
     return Root()
 
 
-class Root(object):
+class Root:
     def __getitem__(self, key):
         return Leaf()
 
 
-class Leaf(object):
+class Leaf:
     pass
 
 
@@ -416,7 +416,7 @@ class IBazService(IFooService):
     pass
 
 
-class DummyService(object):
+class DummyService:
     def __init__(self, result):
         self.result = result
 
@@ -424,7 +424,7 @@ class DummyService(object):
         return self.result
 
 
-class DummyServiceFactory(object):
+class DummyServiceFactory:
     def __init__(self, result):
         self.result = result
 
@@ -434,7 +434,7 @@ class DummyServiceFactory(object):
         return DummyService(self.result)
 
 
-class DummyView(object):
+class DummyView:
     def __init__(self, *a, **kw):
         self.a = a
         self.kw = kw
