@@ -1,5 +1,6 @@
 graft src
 graft tests
+graft .github
 
 include README.rst
 include CHANGES.rst
@@ -7,6 +8,6 @@ include LICENSE.txt
 
 include pyproject.toml setup.cfg
 include .coveragerc .flake8
-include tox.ini .travis.yml
+include tox.ini
 
 recursive-exclude * __pycache__ *.py[cod]

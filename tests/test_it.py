@@ -24,12 +24,8 @@ class TestIntegration_register_service(unittest.TestCase):
         config.register_service(DummyService("foo"), IFooService)
         config.register_service(DummyService("bar"), IFooService, context=Leaf)
 
-        config.add_view(
-            DummyView(IFooService), context=Root, renderer="string"
-        )
-        config.add_view(
-            DummyView(IFooService), context=Leaf, renderer="string"
-        )
+        config.add_view(DummyView(IFooService), context=Root, renderer="string")
+        config.add_view(DummyView(IFooService), context=Leaf, renderer="string")
         config.add_view(
             DummyView(IFooService, context=Root()),
             context=Leaf,
@@ -144,19 +140,13 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config = self.config
         config.set_root_factory(root_factory)
 
-        config.register_service_factory(
-            DummyServiceFactory("foo"), IFooService
-        )
+        config.register_service_factory(DummyServiceFactory("foo"), IFooService)
         config.register_service_factory(
             DummyServiceFactory("bar"), IFooService, context=Leaf
         )
 
-        config.add_view(
-            DummyView(IFooService), context=Root, renderer="string"
-        )
-        config.add_view(
-            DummyView(IFooService), context=Leaf, renderer="string"
-        )
+        config.add_view(DummyView(IFooService), context=Root, renderer="string")
+        config.add_view(DummyView(IFooService), context=Leaf, renderer="string")
         config.add_view(
             DummyView(IFooService, context=Root()),
             context=Leaf,
@@ -269,9 +259,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
         config = self.config
         config.set_root_factory(root_factory)
 
-        config.register_service_factory(
-            DummyServiceFactory("foo"), IFooService
-        )
+        config.register_service_factory(DummyServiceFactory("foo"), IFooService)
         config.register_service_factory(
             DummyServiceFactory("foo"), IFooService, name="foo2"
         )
@@ -311,9 +299,7 @@ class TestIntegration_register_service_factory(unittest.TestCase):
 
     def test_with_no_context(self):
         config = self.config
-        config.register_service_factory(
-            DummyServiceFactory("foo"), IFooService
-        )
+        config.register_service_factory(DummyServiceFactory("foo"), IFooService)
         config.add_view(DummyView(), context=Root, renderer="string")
 
         called = [False]
@@ -392,9 +378,7 @@ class TestIntegration_find_service_factory(unittest.TestCase):
     def test_find_service_factory_service(self):
         svc = DummyService("test")
         self.config.register_service(svc, IFooService)
-        self.assertEqual(
-            svc, self.config.find_service_factory(IFooService).service
-        )
+        self.assertEqual(svc, self.config.find_service_factory(IFooService).service)
 
     def test_external_factory(self):
         services = ServiceRegistry()
@@ -404,9 +388,7 @@ class TestIntegration_find_service_factory(unittest.TestCase):
 
         services.register_factory(my_factory, IFooService)
         self.config.set_service_registry(services)
-        self.assertEqual(
-            my_factory, self.config.find_service_factory(IFooService)
-        )
+        self.assertEqual(my_factory, self.config.find_service_factory(IFooService))
 
 
 def root_factory(request):

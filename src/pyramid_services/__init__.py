@@ -3,12 +3,11 @@ from pyramid.interfaces import IRequest
 from wired import ServiceRegistry
 from zope.interface import Interface
 
-
 _marker = object()
 
 
 class IServiceRegistry(Interface):
-    """ A marker interface for the service registry."""
+    """A marker interface for the service registry."""
 
 
 class SingletonServiceWrapper:
@@ -80,9 +79,7 @@ def set_service_registry(config, registry):
 def register_service(config, service, iface=Interface, context=None, name=""):
     service = config.maybe_dotted(service)
     service_factory = SingletonServiceWrapper(service)
-    config.register_service_factory(
-        service_factory, iface, context=context, name=name
-    )
+    config.register_service_factory(service_factory, iface, context=context, name=name)
 
 
 def register_service_factory(
@@ -116,9 +113,7 @@ def register_service_factory(
     config.action(discriminator, register, introspectables=(intr,))
 
 
-def find_service_factory(
-    config_or_request, iface=Interface, context=None, name=""
-):
+def find_service_factory(config_or_request, iface=Interface, context=None, name=""):
     registry = config_or_request.registry.getUtility(IServiceRegistry)
     factory = registry.find_factory(iface, context=context, name=name)
     if factory is None:

@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 
 def readfile(name):
@@ -22,6 +22,7 @@ setup(
     version='2.2',
     description='A service layer abstraction for the Pyramid Web Framework.',
     long_description=readme + '\n\n' + changes,
+    long_description_content_type='text/x-rst',
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -39,9 +40,7 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
-    keywords=','.join(
-        ['pyramid', 'services', 'service layer', 'ioc container']
-    ),
+    keywords=','.join(['pyramid', 'services', 'service layer', 'ioc container']),
     author='Michael Merickel',
     author_email='pylons-discuss@googlegroups.com',
     url='https://github.com/mmerickel/pyramid_services',
