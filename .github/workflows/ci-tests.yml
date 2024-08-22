@@ -14,11 +14,11 @@ jobs:
         strategy:
             matrix:
                 py:
-                    - "3.7"
                     - "3.8"
                     - "3.9"
                     - "3.10"
                     - "3.11"
+                    - "3.12"
                     - "pypy-3.8"
                 os:
                     - "ubuntu-latest"
@@ -36,9 +36,9 @@ jobs:
         name: "Python: ${{ matrix.py }}-${{ matrix.architecture }} on ${{ matrix.os }}"
         runs-on: ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Setup python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               with:
                   python-version: ${{ matrix.py }}
                   architecture: ${{ matrix.architecture }}
@@ -49,24 +49,24 @@ jobs:
         runs-on: ubuntu-latest
         name: Validate coverage
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Setup python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               with:
-                  python-version: "3.7"
+                  python-version: "3.8"
                   architecture: x64
 
             - run: pip install tox
-            - run: tox -e py37,coverage
+            - run: tox -e py38,coverage
     lint:
         runs-on: ubuntu-latest
         name: Lint the package
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Setup python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               with:
-                  python-version: "3.7"
+                  python-version: "3.8"
                   architecture: x64
             - run: pip install tox
             - run: tox -e lint
