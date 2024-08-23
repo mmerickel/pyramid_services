@@ -23,7 +23,7 @@ jobs:
                 os:
                     - "ubuntu-latest"
                     - "windows-latest"
-                    - "macos-latest"
+                    - "macos-13"
                 architecture:
                     - x64
                     - x86
