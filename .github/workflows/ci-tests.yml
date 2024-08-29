@@ -14,34 +14,24 @@ jobs:
         strategy:
             matrix:
                 py:
-                    - "3.7"
                     - "3.8"
                     - "3.9"
                     - "3.10"
                     - "3.11"
+                    - "3.12"
                     - "pypy-3.8"
                 os:
                     - "ubuntu-latest"
                     - "windows-latest"
-                    - "macos-latest"
-                architecture:
-                    - x64
-                    - x86
-                exclude:
-                    # Linux and macOS don't have x86 python
-                    - os: "ubuntu-latest"
-                      architecture: x86
-                    - os: "macos-latest"
-                      architecture: x86
-        name: "Python: ${{ matrix.py }}-${{ matrix.architecture }} on ${{ matrix.os }}"
+                    - "macos-13"
+        name: "Python: ${{ matrix.py }} on ${{ matrix.os }}"
         runs-on: ${{ matrix.os }}
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Setup python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               with:
                   python-version: ${{ matrix.py }}
-                  architecture: ${{ matrix.architecture }}
             - run: pip install tox
             - name: Running tox
               run: tox -e py
@@ -49,24 +39,22 @@ jobs:
         runs-on: ubuntu-latest
         name: Validate coverage
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Setup python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               with:
-                  python-version: "3.7"
-                  architecture: x64
+                  python-version: "3.8"
 
             - run: pip install tox
-            - run: tox -e py37,coverage
+            - run: tox -e py38,coverage
     lint:
         runs-on: ubuntu-latest
         name: Lint the package
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Setup python
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               with:
-                  python-version: "3.7"
-                  architecture: x64
+                  python-version: "3.8"
             - run: pip install tox
             - run: tox -e lint

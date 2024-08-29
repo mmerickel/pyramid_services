@@ -4,9 +4,9 @@ Changes
 unreleased
 ----------
 
-- Drop support for Python 3.4, 3.5, 3.6.
+- Drop support for Python 3.4, 3.5, 3.6, 3.7.
 
-- Add support for Python 3.10, 3.11.
+- Add support for Python 3.10, 3.11, 3.12.
 
 2.2 (2019-04-22)
 ----------------
